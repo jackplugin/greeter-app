@@ -1,0 +1,29 @@
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: greeter-app
+build:
+  artifacts:
+    - image: jackcn/greeter-app
+      jib:
+        project: jack.learn:greeter-app
+manifests:
+  kustomize:
+    paths:
+      - ../greeter-app-k8s/k8s/base
+profiles:
+  - name: dev
+    manifests:
+      kustomize:
+        paths:
+          - ../greeter-app-k8s/k8s/overlays/dev
+  - name: staging
+    manifests:
+      kustomize:
+        paths:
+          - ../greeter-app-k8s/k8s/overlays/staging
+  - name: prod
+    manifests:
+      kustomize:
+        paths:
+          - ../greeter-app-k8s/k8s/overlays/prod
